@@ -175,6 +175,16 @@ typedef struct {
         rxNew = NULL;                                                                                                  \
     } while (0)
 
+/* CO_SDOserver.c only emits its block-transfer trace when CO_DEBUG_SDO_SERVER
+ * is defined, and nothing defines it on this target, so the trace is dead on
+ * STM32. Provide a minimal printf-based default, opt-in via
+ * CO_DRIVER_ENABLE_SDO_DEBUG so release builds keep stdio out. Define
+ * CO_DEBUG_SDO_SERVER yourself beforehand to route it elsewhere. */
+#if !defined(CO_DEBUG_SDO_SERVER) && defined(CO_DRIVER_ENABLE_SDO_DEBUG)
+#include <stdio.h>
+#define CO_DEBUG_SDO_SERVER(msg) printf("SDO-SRV: %s\r\n", (msg))
+#endif
+
 
 #ifdef __cplusplus
 }
