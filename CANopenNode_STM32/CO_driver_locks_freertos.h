@@ -52,15 +52,29 @@ CO_STM32_exitCritical(UBaseType_t saved) {
     }
 }
 
-/* LOCK declares the state that UNLOCK consumes; both must be in the same scope. */
-#define CO_LOCK_CAN_SEND(CAN_MODULE)   UBaseType_t coLockStateSend = CO_STM32_enterCritical()
-#define CO_UNLOCK_CAN_SEND(CAN_MODULE) CO_STM32_exitCritical(coLockStateSend)
+#define CO_LOCK_CAN_SEND(CAN_MODULE)                                  \
+    do {                                                              \
+        UBaseType_t coLockStateSend = CO_STM32_enterCritical();
+#define CO_UNLOCK_CAN_SEND(CAN_MODULE)                                \
+        CO_STM32_exitCritical(coLockStateSend);                       \
+    }                                                                 \
+    while (0)
 
-#define CO_LOCK_EMCY(CAN_MODULE)       UBaseType_t coLockStateEmcy = CO_STM32_enterCritical()
-#define CO_UNLOCK_EMCY(CAN_MODULE)     CO_STM32_exitCritical(coLockStateEmcy)
+#define CO_LOCK_EMCY(CAN_MODULE)                                      \
+    do {                                                              \
+        UBaseType_t coLockStateEmcy = CO_STM32_enterCritical();
+#define CO_UNLOCK_EMCY(CAN_MODULE)                                    \
+        CO_STM32_exitCritical(coLockStateEmcy);                       \
+    }                                                                 \
+    while (0)
 
-#define CO_LOCK_OD(CAN_MODULE)         UBaseType_t coLockStateOd = CO_STM32_enterCritical()
-#define CO_UNLOCK_OD(CAN_MODULE)       CO_STM32_exitCritical(coLockStateOd)
+#define CO_LOCK_OD(CAN_MODULE)                                        \
+    do {                                                              \
+        UBaseType_t coLockStateOd = CO_STM32_enterCritical();
+#define CO_UNLOCK_OD(CAN_MODULE)                                      \
+        CO_STM32_exitCritical(coLockStateOd);                         \
+    }                                                                 \
+    while (0)
 
 #ifdef __cplusplus
 }
